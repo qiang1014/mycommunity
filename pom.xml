@@ -63,6 +63,12 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+<!--        flyway的依赖包-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.0.8</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,7 +77,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.0.8</version>
+
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/community?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf-8&amp;serverTimezone=CTT</url>
+                    <user>root</user>
+                    <password>root</password>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
