@@ -49,7 +49,7 @@ public class AuthorizeController {
         accessTokenDto.setClient_secret(client_secret);
 
         String token = provider.getToken(accessTokenDto);
-        System.out.println(token);
+       // System.out.println(token);
         GithubUser githubUser = provider.getGithubUser(token);
         System.out.println(githubUser);
 
@@ -66,6 +66,7 @@ public class AuthorizeController {
 
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatar_url(githubUser.getAvatar_url());
 
             userDao.saveAndFlush(user);
 

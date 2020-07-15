@@ -16,4 +16,6 @@ public interface UserDao extends JpaRepository<User,Integer>, JpaSpecificationEx
 
     public User findByToken(String token);
 
+    //public User findById()
+
 }

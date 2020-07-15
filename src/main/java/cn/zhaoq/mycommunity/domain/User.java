@@ -1,6 +1,7 @@
 package cn.zhaoq.mycommunity.domain;
 
 
+import lombok.Data;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
@@ -9,8 +10,10 @@ import javax.persistence.*;
  * user实体类，与数据库建立映射关系
  */
 
+
 @Entity
 @Table
+@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,63 +35,7 @@ public class User {
     @Column(name = "gmt_modified")
     private Long gmtModified;
 
-    public String getToken() {
-        return token;
-    }
+    @Column(name = "avatar_url")
+    private String avatar_url;
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
-    public Long getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Long gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Long getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Long gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", token='" + token + '\'' +
-                ", accountId='" + accountId + '\'' +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
-                '}';
-    }
 }
