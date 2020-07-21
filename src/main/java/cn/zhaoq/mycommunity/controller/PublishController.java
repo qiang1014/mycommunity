@@ -42,23 +42,9 @@ public class PublishController {
                             @RequestParam("tag") String tag,
                             HttpServletRequest request, Model model){
 
-        //判断用户是否登录
+        //验证用户是否登录
         User userToken = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies!=null && cookies.length!=0){
-            for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("token")){
-                    //连接数据库
-                    userToken = userDao.findByToken(cookie.getValue());
-                    if(userToken!=null){
-                        //将数据存入session中
-                        request.getSession().setAttribute("username",userToken.getName());
-
-                    }
-                    break;
-                }
-            }
-        }
+        userToken = (User) request.getSession().getAttribute("username");
 
         if(userToken==null){
             model.addAttribute("error","用户尚未登录");

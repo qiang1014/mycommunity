@@ -55,5 +55,33 @@ public class QuestionService {
 
         return questionDao.getTotal();
     }
+
+    public List<QuestionDto> getMyQuestionList(Integer id, Integer page, Integer size) {
+        Integer offset = (page-1)*size;
+
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        //调用QuestionDao获取所有的Question对象
+        List<Question> questionDaoAll = questionDao.getMyQuestions(id,offset,size);
+
+        for (Question question : questionDaoAll) {
+            //使用UserDao获取User对象
+            User user = userDao.getOne(question.getCreator());
+            QuestionDto questionDto = new QuestionDto();
+            BeanUtils.copyProperties(question,questionDto);
+            questionDto.setUser(user);
+
+            questionDtos.add(questionDto);
+        }
+
+        return questionDtos;
+    }
+
+    /**
+     * 获取我的问题总数
+     * @return
+     */
+    public Integer getMyQuestionTotal(Integer id) {
+        return questionDao.getMyQuestionCount(id);
+    }
 }
 
