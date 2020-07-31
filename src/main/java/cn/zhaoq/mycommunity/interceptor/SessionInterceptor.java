@@ -3,6 +3,7 @@ package cn.zhaoq.mycommunity.interceptor;
 import cn.zhaoq.mycommunity.dao.UserDao;
 import cn.zhaoq.mycommunity.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Service
 public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -24,9 +26,10 @@ public class SessionInterceptor implements HandlerInterceptor {
                 if(cookie.getName().equals("token")){
                     //连接数据库
                     User userToken = userDao.findByToken(cookie.getValue());
+                    System.out.println(userToken);
                     if(userToken!=null){
                         //将数据存入session中
-                        request.getSession().setAttribute("username",userToken.getName());
+                        request.getSession().setAttribute("user",userToken);
                     }
                     break;
                 }

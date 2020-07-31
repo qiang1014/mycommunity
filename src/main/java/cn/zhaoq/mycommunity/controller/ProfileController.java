@@ -40,7 +40,7 @@ public class ProfileController {
 
         //验证用户是否登录
         User userToken = null;
-        userToken = (User) request.getSession().getAttribute("username");
+        userToken = (User) request.getSession().getAttribute("user");
 
         if(userToken == null){
             return "redirect:/";

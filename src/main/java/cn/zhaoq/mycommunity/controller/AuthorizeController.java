@@ -5,6 +5,7 @@ import cn.zhaoq.mycommunity.domain.User;
 import cn.zhaoq.mycommunity.dto.AccessTokenDto;
 import cn.zhaoq.mycommunity.dto.GithubUser;
 import cn.zhaoq.mycommunity.provider.GithubProvider;
+import cn.zhaoq.mycommunity.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,10 +23,6 @@ public class AuthorizeController {
 
     @Autowired
     private GithubProvider provider;
-
-    @Autowired
-    private UserDao userDao;
-
     @Value("${github.client.id}")
     private String client_id;
 
@@ -34,6 +31,9 @@ public class AuthorizeController {
 
     @Value("${github.client.secret}")
     private String client_secret;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("callback")
     public String callback(@RequestParam(name="code") String code,
@@ -68,7 +68,8 @@ public class AuthorizeController {
             user.setGmtModified(user.getGmtCreate());
             user.setAvatar_url(githubUser.getAvatar_url());
 
-            userDao.saveAndFlush(user);
+            //将用户存入数据库
+            userService.saveOrFlush(user);
 
             //将数据存放到cookie中
             response.addCookie(new Cookie("token",user.getToken()));
@@ -77,5 +78,17 @@ public class AuthorizeController {
         }else{
             return "redirect:/";
         }
+
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        //删除cookie和session
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        request.getSession().removeAttribute("user");
+        return "redirect:/";
     }
 }

@@ -44,4 +44,12 @@ public interface QuestionDao extends JpaRepository<Question,Integer>, JpaSpecifi
      */
     @Query(value="select count(1) from question where creator = ?",nativeQuery=true)
     public Integer getMyQuestionCount(Integer id);
+
+    /**
+     * 根据id查询问题信息
+     * @param id
+     * @return
+     */
+    @Query(value="select *from question where id = ?",nativeQuery=true)
+    public Question getQuestionById(Integer id);
 }

@@ -5,12 +5,14 @@ import cn.zhaoq.mycommunity.dao.UserDao;
 import cn.zhaoq.mycommunity.domain.Question;
 import cn.zhaoq.mycommunity.domain.User;
 import cn.zhaoq.mycommunity.dto.QuestionDto;
+import cn.zhaoq.mycommunity.exception.CustomizeException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 调用dao接口
@@ -82,6 +84,37 @@ public class QuestionService {
      */
     public Integer getMyQuestionTotal(Integer id) {
         return questionDao.getMyQuestionCount(id);
+    }
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    public QuestionDto getDetailQuestion(Integer id) {
+        //根据id查询当前的问题信息
+        Question question = questionDao.getQuestionById(id);
+        if(question==null){
+            throw new CustomizeException("问题不存在！换个试试");
+        }
+        //根据问题的creator查询创建者信息
+        User user = userDao.getOne(question.getCreator());
+
+        QuestionDto questionDto = new QuestionDto();
+
+        //将数据封装
+        BeanUtils.copyProperties(question,questionDto);
+        questionDto.setUser(user);
+        return questionDto;
+    }
+
+    /**
+     * 保存或更新
+     * @param question
+     */
+    public void save(Question question) {
+        //若问题不存在，进行保存操作
+        questionDao.save(question);
     }
 }
 
